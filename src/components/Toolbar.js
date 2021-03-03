@@ -12,6 +12,16 @@ import { getDescendents } from '../core/Project';
 
 import './Toolbar.css';
 
+function compare_two(p1,p2) {
+    console.log("Project...."+p1);
+
+    if (p1.name>p2.name)
+        return 1;
+    if (p2.name>p1.name)
+        return -1;
+    return 0
+
+}
 class Toolbar extends Component {
     render() {
         const {
@@ -55,7 +65,7 @@ class Toolbar extends Component {
                     <Popover className="Toolbar-item">
                         <AnchorButton text="Projects" icon="projects"/>
                         <FilterMenu
-                            checkboxItems={projects.sort((p1, p2) => Math.sign(p1.item_order - p2.item_order))}
+                            checkboxItems={projects.sort(compare_two)}
                             selectedItems={projects.filter(el => !filteredProjects.contains(el))}
                             labelProperty="name"
                             onChange={(project, checked) => {

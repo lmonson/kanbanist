@@ -62,7 +62,39 @@ export default class Todoist {
                 // Projects
                 const projects = todoistData['projects'];
                 projects.sort((p1, p2) => p1.item_order - p2.item_order);
+                let results = {}
+                projects.forEach( p => results[p.id] = p)
+                projects.forEach( p => {
+                    let parent_id = p["parent_id"];
+                    let parent_project = results[parent_id];
+                    while (parent_project) {
+                        p['name'] = parent_project['name']+"/"+p["name"]
+                        let next_parent_id = parent_project["parent_id"]
+                        let next_parent_project = results[parent_id]
+                        if (next_parent_project["name"]==parent_project["name"])
+                            return
+                        parent_id = next_parent_id
+                        parent_project = next_parent_project
+                    }
 
+                })
+
+/*
+{
+  "child_order": 16,
+  "collapsed": 0,
+  "color": 47,
+  "id": 2258469567,
+  "is_archived": 0,
+  "is_deleted": 0,
+  "is_favorite": 0,
+  "name": "Take From Nat Eliason Brain and Send to Jayden",
+  "parent_id": 2257612655,
+  "shared": false,
+  "sync_id": null
+}
+ */
+                projects.forEach( p1 => console.log("order:"+p1.item_order))
                 // Colaborators
                 const collaborators = todoistData['collaborators'];
 
